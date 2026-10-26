@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
-async function main() {
+export async function seedDatabase(clientInstance = null) {
+  const prisma = clientInstance || new PrismaClient();
   console.log('🌱 Starting database seeding for ExamReady...');
 
   // Clean existing data
@@ -163,13 +162,16 @@ async function main() {
   console.log(`  2. ${exam2.subject}`);
   console.log(`  3. ${exam3.subject}`);
   console.log(`  4. ${exam4.subject}`);
+
+  if (!clientInstance) {
+    await prisma.$disconnect();
+  }
 }
 
-main()
-  .catch((e) => {
+// Auto-run if executed directly
+if (import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}` || process.argv[1]?.endsWith('seed.js')) {
+  seedDatabase().catch((e) => {
     console.error('❌ Error during seeding:', e);
     process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
   });
+}

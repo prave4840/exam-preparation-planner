@@ -66,6 +66,8 @@ export const DashboardPage = () => {
           icon={AlertCircle}
           title="Failed to Load Dashboard"
           description={error?.message || 'Could not connect to the backend server. Make sure PostgreSQL and the API are running.'}
+          actionLabel="Retry"
+          onAction={() => window.location.reload()}
         />
       </div>
     );

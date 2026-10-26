@@ -65,6 +65,24 @@ export const errorHandler = (err, req, res, next) => {
         message: 'Database constraint violation. Ensure study duration is between 15 and 480 minutes.',
       });
     }
+
+    // Table does not exist in database (migrations not yet run)
+    if (err.code === 'P2021') {
+      return res.status(500).json({
+        success: false,
+        message: 'Database schema is not yet initialized. Please run `npx prisma migrate deploy` on your database.',
+        detail: err.message,
+      });
+    }
+
+    // Database connection or authentication failure
+    if (err.code === 'P1000' || err.code === 'P1001' || err.code === 'P1003') {
+      return res.status(500).json({
+        success: false,
+        message: 'Cannot connect to database. Please check your Neon DATABASE_URL and ensure sslmode=require.',
+        detail: err.message,
+      });
+    }
   }
 
   // Raw Database check constraint violation message detection (Postgres 23514)
@@ -76,13 +94,22 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // Raw table not found detection
+  if (err.message && (err.message.includes('does not exist') || err.message.includes('relation "exams"'))) {
+    return res.status(500).json({
+      success: false,
+      message: 'Database schema tables missing. Please run `npx prisma migrate deploy`.',
+      detail: err.message,
+    });
+  }
+
   // Unexpected / 500 Internal Server Errors
   console.error('Unhandled Server Error:', err);
 
   const isProduction = process.env.NODE_ENV === 'production';
   return res.status(500).json({
     success: false,
-    message: isProduction ? 'An unexpected server error occurred.' : err.message || 'Server error',
+    message: err.message || (isProduction ? 'An unexpected server error occurred.' : 'Server error'),
     ...(!isProduction && err.stack && { stack: err.stack }),
   });
 };

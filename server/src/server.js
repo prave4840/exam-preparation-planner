@@ -9,6 +9,19 @@ const startServer = async () => {
     await prisma.$connect();
     console.log('✓ Successfully connected to PostgreSQL via Prisma ORM');
 
+    // Auto-seed initial course data if database is brand new and empty
+    try {
+      const examCount = await prisma.exam.count();
+      if (examCount === 0) {
+        console.log('Database has no exams yet. Auto-seeding initial college courses and tasks...');
+        const { seedDatabase } = await import('../prisma/seed.js');
+        await seedDatabase(prisma);
+        console.log('✓ Initial college courses seeded successfully');
+      }
+    } catch (seedErr) {
+      console.warn('Note on auto-seeding:', seedErr.message);
+    }
+
     const server = app.listen(PORT, () => {
       console.log(`✓ ExamReady Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
       console.log(`✓ API Health Check: http://localhost:${PORT}/api/health`);
