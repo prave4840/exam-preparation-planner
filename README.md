@@ -26,6 +26,7 @@ A college micro-project demonstrating Full Stack Web Development, Git and GitHub
 8. [Installation & Setup Guide](#8-installation--setup-guide)
 9. [Automated Testing & Verification](#9-automated-testing--verification)
 10. [Git Workflow & GitHub Instructions](#10-git-workflow--github-instructions)
+11. [Deployment Guide (Render & Neon PostgreSQL)](#11-deployment-guide-render--neon-postgresql)
 
 ---
 
@@ -481,6 +482,39 @@ git branch -M main
 git remote add origin https://github.com/prave4840/exam-preparation-planner.git
 git push -u origin main
 ```
+
+---
+
+## 11. Deployment Guide (Render & Neon PostgreSQL)
+
+### Option A: Unified Full-Stack Deployment (Recommended on Render)
+Deploy both the React frontend and Express backend from the same repository root as a single Web Service on Render.
+
+1. **Connect Repository**: In [Render Dashboard](https://dashboard.render.com/), click **New +** > **Web Service** and choose `prave4840/exam-preparation-planner`.
+2. **Configure Settings**:
+   - **Name**: `exam-preparation-planner`
+   - **Environment**: `Node`
+   - **Root Directory**: *(leave blank)*
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm start`
+3. **Environment Variables**:
+   - `DATABASE_URL`: Your Neon PostgreSQL connection string (e.g. `postgresql://user:pass@ep-xyz.neon.tech/examready?sslmode=require`)
+   - `NODE_ENV`: `production`
+4. **Deploy**: Click **Create Web Service**. Both the client and server build automatically, and Express serves the React UI at the root domain while routing `/api/*` to the REST endpoints.
+
+---
+
+### Option B: Backend-Only Service (API on Render)
+If deploying the backend with **Root Directory** set to `server`:
+
+1. **Configure Settings**:
+   - **Root Directory**: `server`
+   - **Build Command**: `npm run build` *(runs `prisma generate`)*
+   - **Start Command**: `npm start` *(runs `node src/server.js`)*
+2. **Environment Variables**:
+   - `DATABASE_URL`: Your Neon PostgreSQL connection string
+   - `NODE_ENV`: `production`
+   - `CLIENT_URL`: Your frontend URL (e.g. `https://examready.vercel.app`)
 
 ---
 
