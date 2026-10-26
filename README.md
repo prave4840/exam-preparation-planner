@@ -26,7 +26,7 @@ A college micro-project demonstrating Full Stack Web Development, Git and GitHub
 8. [Installation & Setup Guide](#8-installation--setup-guide)
 9. [Automated Testing & Verification](#9-automated-testing--verification)
 10. [Git Workflow & GitHub Instructions](#10-git-workflow--github-instructions)
-11. [Deployment Guide (Render & Neon PostgreSQL)](#11-deployment-guide-render--neon-postgresql)
+11. [Deployment Guide (Render, Neon & Vercel)](#11-deployment-guide-render-neon--vercel)
 
 ---
 
@@ -485,9 +485,30 @@ git push -u origin main
 
 ---
 
-## 11. Deployment Guide (Render & Neon PostgreSQL)
+## 11. Deployment Guide (Render, Neon & Vercel)
 
-### Option A: Unified Full-Stack Deployment (Recommended on Render)
+### Deploying the Frontend on Vercel
+Deploy the React + Vite frontend client separately on Vercel while connecting to your Render backend:
+
+1. **Sign in to Vercel**: Go to [vercel.com](https://vercel.com/) and sign in with GitHub.
+2. **Import Project**: Click **Add New...** > **Project** and select `prave4840/exam-preparation-planner`.
+3. **Configure Project Settings**:
+   - **Framework Preset**: `Vite` *(auto-detected)*
+   - **Root Directory**: Click **Edit** and choose `client` *(very important)*
+   - **Build Command**: `npm run build` *(default)*
+   - **Output Directory**: `dist` *(default)*
+4. **Environment Variables**:
+   Add the following environment variable:
+   - **Key**: `VITE_API_URL`
+   - **Value**: `https://<your-render-service-name>.onrender.com/api` *(replace with your actual Render service URL, ensure `/api` is at the end)*
+5. **Deploy**: Click **Deploy**. Vercel will build the frontend and provide your live production URL (e.g., `https://exam-preparation-planner.vercel.app`).
+6. **Update Render CORS (Optional & Recommended)**:
+   In your Render dashboard for the server web service, add or update the `CLIENT_URL` environment variable with your new Vercel domain:
+   - `CLIENT_URL`: `https://exam-preparation-planner.vercel.app`
+
+---
+
+### Deploying Backend on Render & Neon DB (Reference)
 Deploy both the React frontend and Express backend from the same repository root as a single Web Service on Render.
 
 1. **Connect Repository**: In [Render Dashboard](https://dashboard.render.com/), click **New +** > **Web Service** and choose `prave4840/exam-preparation-planner`.
