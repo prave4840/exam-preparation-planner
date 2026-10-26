@@ -1,10 +1,14 @@
 # ExamReady — Smart Exam Preparation Planner
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/prave4840/exam-preparation-planner)
 [![Node.js Version](https://img.shields.io/badge/Node.js-v20%2B-green.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/React-v18-blue.svg)](https://react.dev/)
 [![Prisma Version](https://img.shields.io/badge/Prisma-v6-indigo.svg)](https://www.prisma.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v14%2B-blue.svg)](https://www.postgresql.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+> **GitHub Repository:** [https://github.com/prave4840/exam-preparation-planner](https://github.com/prave4840/exam-preparation-planner)
+
 
 A college micro-project demonstrating Full Stack Web Development, Git and GitHub, advanced React concepts, layered backend architecture, CRUD APIs with validation, centralized error handling, and advanced relational database concepts with PostgreSQL and Prisma ORM.
 
@@ -356,7 +360,7 @@ exam perparation planner/
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/exam-preparation-planner.git
+git clone https://github.com/prave4840/exam-preparation-planner.git
 cd exam-preparation-planner
 ```
 
@@ -474,7 +478,7 @@ git commit -m "feat: complete full-stack ExamReady preparation planner with Post
 ### 4. Create Repository on GitHub & Push
 ```bash
 git branch -M main
-git remote add origin https://github.com/<your-username>/examready-planner.git
+git remote add origin https://github.com/prave4840/exam-preparation-planner.git
 git push -u origin main
 ```
 
