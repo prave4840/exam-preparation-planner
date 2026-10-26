@@ -1,0 +1,39 @@
+// Prisma Schema for ExamReady - Smart Exam Preparation Planner
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Exam {
+  id        Int         @id @default(autoincrement())
+  subject   String
+  examDate  DateTime
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  tasks     StudyTask[]
+
+  @@unique([subject, examDate], name: "subject_examDate_unique")
+  @@map("exams")
+}
+
+model StudyTask {
+  id          Int      @id @default(autoincrement())
+  examId      Int
+  exam        Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  title       String
+  plannedDate DateTime
+  minutes     Int
+  done        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([examId, title], name: "examId_title_unique")
+  @@index([examId])
+  @@index([plannedDate])
+  @@map("study_tasks")
+}
